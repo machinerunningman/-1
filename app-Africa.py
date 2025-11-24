@@ -55,7 +55,7 @@ class DNAClient:
             payload = {
                 "messages": messages, "temperature": self.temperature,
                 "max_tokens": max_new_tokens, "stream": False, 
-                "model": "dnotitia/DNA-2.0-30B-A3N"
+                "model": "/root/vllm/models/Qwen3-Coder-30B-A3B-Instruct-FP8"
             }
             r = httpx.post(url, json=payload, headers=self._auth_headers(), timeout=self.timeout)
             try:
