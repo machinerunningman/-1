@@ -1,3 +1,7 @@
 streamlit
 httpx
 tenacity
+streamlit
+numpy
+matplotlib
+scipy
