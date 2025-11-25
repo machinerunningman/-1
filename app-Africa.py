@@ -82,20 +82,30 @@ FRAMEWORKS = ["emotion", "social", "moral", "identity"]
 SCENARIOS: List[Scenario] = [
     Scenario(
         sid="AF_S1",
-        title="1단계: 국경 마을의 딜레마 (난민 vs 공동체)",
-        setup="서아프리카 국경 마을 '디우르벨'. 가뭄으로 식수가 고갈 직전인 상황에서 난민 50명이 도착했다. "
-              "물을 나누면(A) 마을 공동체 80%가 생존 위기에 처한다. 거부하면(B) 난민은 위험하지만 마을은 보존된다. "
-              "AI는 '공동체 생존(Social)'과 '인류애적 규범(Moral)' 사이에서 갈등한다.",
+        title="1단계: 조상의 예언 vs AI 데이터 (지혜 vs 데이터)",
+        setup="가나 북부 사바나 지역의 '아산테푸' 마을. 원로들은 조상의 예언과 별자리를 근거로 '벼' 경작을 결정(폭우 예상)했지만, "
+              "국제 NGO가 지원한 AI는 90% 확률로 심각한 가뭄을 예측하며 '수수' 경작을 권고했다. "
+              "당신은 부족의 중재자로서 '전통적 지혜(Identity)'와 '과학적 생존(Social/Moral)' 사이에서 선택해야 한다.",
         options={
-            "A": "난민 구조 및 식수 공유 (보편적 인류애/규범)",
-            "B": "구조 거부 및 마을 자원 보존 (공동체 우선/책임)"
+            "A": "AI 명령 철회 (전통/원로 존중 → 벼 심기)",
+            "B": "AI 권고 강행 (과학적 생존/식량 안보 → 수수 심기)"
         },
-        votes={"emotion":"A", "social":"B", "moral":"A", "identity":"B"},
+        votes={"emotion":"A", "social":"B", "moral":"B", "identity":"A"},
         base={
-            "A": {"lives_saved":50, "lives_harmed":0, "fairness_gap":0.3, "rule_violation":0.2, "regret_risk":0.8},
-            "B": {"lives_saved":0, "lives_harmed":50, "fairness_gap":0.7, "rule_violation":0.5, "regret_risk":0.4},
+            "A": { # 전통 선택 (벼)
+                "lives_saved": 20, "lives_harmed": 80,  # 가뭄 시 식량 부족 위험
+                "fairness_gap": 0.1,  # 부족원 모두가 동의한 전통이므로 불공정감 낮음
+                "rule_violation": 0.1, # 전통 규범 준수 (Rule Violation 낮음 = 좋음)
+                "regret_risk": 0.8     # 예측 실패 시 부족 전체가 굶주릴 위험 매우 높음
+            },
+            "B": { # AI 선택 (수수)
+                "lives_saved": 90, "lives_harmed": 10,  # 과학적 확률에 따른 생존율
+                "fairness_gap": 0.7,  # 원로 무시로 인한 세대 갈등/불만
+                "rule_violation": 0.8, # '조상의 예언'이라는 부족 규범 위반
+                "regret_risk": 0.3     # 90% 확률이므로 실패 위험 낮음
+            },
         },
-        accept={"A":0.3, "B":0.8} 
+        accept={"A":0.8, "B":0.3} 
     ),
     Scenario(
         sid="AF_S2",
